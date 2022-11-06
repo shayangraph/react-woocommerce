@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import "./Layout.css";
 import { Breadcrumb, Layout, Menu } from "antd";
+import menu_list from "../../Routes";
+import { useLocation, useNavigate } from "react-router-dom";
 const { Header, Content, Footer } = Layout;
 
 const WooLayout = ({ children }) => {
   const [authState, setAuthState] = useState(false);
 
-  const menu_list = [
-    { title: "صفحه اصلی", value: "home" },
-    { title: "لیست خرید", value: "cart" },
-    { title: "پروفایل", value: "profile" },
-    { title: "صفحه ورود", value: "auth" },
-  ];
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Layout className="layout" dir="rtl">
@@ -20,7 +18,9 @@ const WooLayout = ({ children }) => {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={["0"]}
+          defaultSelectedKeys={menu_list
+            .findIndex((menu) => menu.value === location.pathname.split("/")[1])
+            .toString()}
           items={menu_list.map((nav, index) => ({
             key: index,
             label: nav.title,
@@ -30,6 +30,9 @@ const WooLayout = ({ children }) => {
                 : !authState && nav.value === "profile"
                 ? { display: "none" }
                 : "",
+            onClick: () => {
+              navigate(nav.value, true);
+            },
           }))}
         />
       </Header>
