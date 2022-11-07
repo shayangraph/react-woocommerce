@@ -14,7 +14,7 @@ function App() {
       <WooLayout>
         <Routes>
           {menu_list.map((nav, index) => {
-            return <Route path={nav.value} element={<div>page {index}</div>} />;
+            return <Route path={nav.value} element={nav.component} />;
           })}
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="*" element={<Navigate to="/home" />} />
