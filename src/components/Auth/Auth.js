@@ -1,11 +1,19 @@
 import { useState } from "react";
 import "./Auth.css";
 import { Button, Checkbox, Form, Input } from "antd";
+import axios from "axios";
+import { baseUrl } from "../../config";
 
 const AuthPage = () => {
   const [register, setRegister] = useState(false);
   const onFinish = (values) => {
     console.log("Success:", values);
+    axios
+      .post(
+        `${baseUrl}/wp-json/jwt-auth/v1/token?username=${values.username}&password=${values.password}`
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
