@@ -3,14 +3,16 @@ import "./Layout.css";
 import { Breadcrumb, Layout, Menu } from "antd";
 import menu_list from "../../Routes";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../store/auth";
 const { Header, Content, Footer } = Layout;
 
 const WooLayout = ({ children }) => {
-  const [authState, setAuthState] = useState(false);
-
+  const { isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
+  let path = location.pathname.split("/")[1];
   return (
     <Layout className="layout" dir="rtl">
       <Header>
@@ -25,9 +27,9 @@ const WooLayout = ({ children }) => {
             key: index,
             label: nav.title,
             style:
-              authState && nav.value === "auth"
+              isAuthenticated() && nav.value === "auth"
                 ? { display: "none" }
-                : !authState && nav.value === "profile"
+                : !isAuthenticated() && nav.value === "profile"
                 ? { display: "none" }
                 : "",
             onClick: () => {

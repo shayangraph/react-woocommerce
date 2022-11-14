@@ -1,23 +1,41 @@
-import { useState } from "react";
-import "./Auth.css";
+import React, { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
+import "./Auth.css";
 import axios from "axios";
-import { baseUrl } from "../../config";
+import { AXIOS_API_URL } from "../../config";
+import { useCookies } from "react-cookie";
+
+const date = new Date();
+const expires_date = new Date(date.setDate(date.getDate() + 3));
 
 const AuthPage = () => {
   const [register, setRegister] = useState(false);
+  const [cookies, setCookie] = useCookies(["token"]);
+  console.log(expires_date);
   const onFinish = (values) => {
     console.log("Success:", values);
     axios
       .post(
-        `${baseUrl}/wp-json/jwt-auth/v1/token?username=${values.username}&password=${values.password}`
+        `${AXIOS_API_URL}/wp-json/jwt-auth/v1/token?username=${values.username}&password=${values.password}`
       )
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        const { user_display_name, user_email, token } = res.data;
+        if (res.data) {
+          window.localStorage.setItem("username", user_display_name);
+          window.localStorage.setItem("email", user_email);
+          setCookie("token", token, { path: "/", expires: expires_date });
+        }
+      })
       .catch((err) => console.log(err));
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  console.log(register, "register state");
+
   return (
     <div className="mt-5 w-75 mr-auto ml-auto">
       <Form
@@ -41,7 +59,7 @@ const AuthPage = () => {
           rules={[
             {
               required: true,
-              message: "لطفا نام کاربری خود را وارد کنید",
+              message: "لطفا نام کاربری خود را وارد کنید!",
             },
           ]}
         >
@@ -49,22 +67,24 @@ const AuthPage = () => {
         </Form.Item>
 
         <Form.Item
-          label="رمز عبور"
+          label="رمزعبور"
           name="password"
           rules={[
             {
               required: true,
-              message: "لطفا رمز عبور خود را وارد کنید",
+              message: "لطفا رمزعبور خود را وارد کنید!",
             },
           ]}
         >
           <Input.Password />
         </Form.Item>
 
-        {register && (
-          <Form.Item label="نام کاربری" name="username">
-            <input type="text" />
+        {register ? (
+          <Form.Item label="نام" name="name">
+            <Input />
           </Form.Item>
+        ) : (
+          ""
         )}
 
         <Form.Item
@@ -75,8 +95,13 @@ const AuthPage = () => {
             span: 16,
           }}
         >
-          <Checkbox onChange={(e) => setRegister(e.target.checked)}>
-            ثبت نام
+          <Checkbox
+            onChange={(e) => {
+              // console.log(e)
+              setRegister(e.target.checked);
+            }}
+          >
+            ثبت نام؟
           </Checkbox>
         </Form.Item>
 
