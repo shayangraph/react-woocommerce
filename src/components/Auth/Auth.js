@@ -11,7 +11,7 @@ const expires_date = new Date(date.setDate(date.getDate() + 3));
 const AuthPage = () => {
   const [register, setRegister] = useState(false);
   const [cookies, setCookie] = useCookies(["token"]);
-  console.log(expires_date);
+  console.log(expires_date)
   const onFinish = (values) => {
     console.log("Success:", values);
     axios
@@ -34,7 +34,6 @@ const AuthPage = () => {
     console.log("Failed:", errorInfo);
   };
 
-  console.log(register, "register state");
 
   return (
     <div className="mt-5 w-75 mr-auto ml-auto">

@@ -1,12 +1,14 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
+import React, { createContext, useEffect, useState } from "react";
+import { useCookies  } from "react-cookie";
 
 const AuthContext = createContext();
 const { Provider } = AuthContext;
 
 const AuthProvider = ({ children }) => {
   const [authState, setAuthState] = useState({});
-  const [cookies, setCookies,remove] = useCookies(["token"]);
+  const [cookies, setCookie , remove] = useCookies(["token"]);
+
+ 
 
   useEffect(() => {
     if (window.localStorage.getItem("username") && cookies.token) {
@@ -16,7 +18,7 @@ const AuthProvider = ({ children }) => {
         email: window.localStorage.getItem("email"),
       });
     }
-  }, [setAuthState, cookies]);
+  }, [setAuthState,cookies]);
 
   const isAuthenticated = () => {
     if (authState.token) {
@@ -27,11 +29,11 @@ const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    remove('token');
-    window.localStorage.removeItem("username");
-    window.localStorage.removeItem("email");
-    setAuthState({});
-  };
+    remove("token")
+    window.localStorage.removeItem("username")
+    window.localStorage.removeItem("email")
+    setAuthState({})
+  }
 
   return (
     <Provider
@@ -39,7 +41,7 @@ const AuthProvider = ({ children }) => {
         authState,
         isAuthenticated,
         setAuthNewState: (value) => setAuthState(value),
-        logout,
+        logout
       }}
     >
       {children}

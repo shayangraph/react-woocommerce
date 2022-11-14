@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import "./Layout.css";
 import { Breadcrumb, Layout, Menu } from "antd";
+import React, { useContext, useState } from "react";
 import menu_list from "../../Routes";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import {useLocation, useNavigate} from "react-router-dom"
 import { AuthContext } from "../../store/auth";
+
 const { Header, Content, Footer } = Layout;
 
-const WooLayout = ({ children }) => {
-  const { isAuthenticated } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const location = useLocation();
+const WooCommerceLayout = ({ children }) => {
+  const {isAuthenticated} = useContext(AuthContext)
+  let navigate = useNavigate()
+  let location = useLocation()
 
-  let path = location.pathname.split("/")[1];
+  let path = location.pathname.split('/')[1]
+  
   return (
     <Layout className="layout" dir="rtl">
       <Header>
@@ -20,28 +20,26 @@ const WooLayout = ({ children }) => {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={menu_list
-            .findIndex((menu) => menu.value === location.pathname.split("/")[1])
-            .toString()}
+          defaultSelectedKeys={[menu_list.findIndex(menu => menu.value === path).toString()]}
           items={menu_list.map((nav, index) => ({
             key: index,
             label: nav.title,
             style:
-              isAuthenticated() && nav.value === "auth"
+            isAuthenticated() === true && nav.value === "auth"
                 ? { display: "none" }
-                : !isAuthenticated() && nav.value === "profile"
+                : isAuthenticated() === false && nav.value === "profile"
                 ? { display: "none" }
                 : "",
-            onClick: () => {
-              navigate(nav.value, true);
-            },
+                onClick:()=>{navigate(nav.value,true)}
           }))}
-        />
+        >
+          
+        </Menu>
       </Header>
       <Content
         style={{
           padding: "0 50px",
-          minHeight: "85vh",
+          minHeight: "82vh",
         }}
       >
         {/* <Breadcrumb
@@ -60,9 +58,10 @@ const WooLayout = ({ children }) => {
           textAlign: "center",
         }}
       >
-        graph ©2018 Created by shayan
+        Sm.S ©2018 Created by Toplearn
       </Footer>
     </Layout>
   );
 };
-export default WooLayout;
+
+export default WooCommerceLayout;

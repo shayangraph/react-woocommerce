@@ -13,13 +13,13 @@ const ProfilePage = () => {
     if (isAuthenticated() === false) {
       return navigate("/");
     }
-  }, []);
+  });
 
   return (
     <div>
       <p>صفحه پروفایل</p>
       <div>
-        <Button color="danger" onClick={() => logout}>
+        <Button color="danger" onClick={() => logout()}>
           خروج
         </Button>
       </div>
