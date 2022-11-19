@@ -7,6 +7,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { CookiesProvider } from "react-cookie";
 import { AuthProvider } from "./store/auth";
 import { BrowserRouter as Router } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,6 +16,7 @@ root.render(
     <Router>
       <CookiesProvider>
         <AuthProvider>
+          <ToastContainer />
           <App />
         </AuthProvider>
       </CookiesProvider>
