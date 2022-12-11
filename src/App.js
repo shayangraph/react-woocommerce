@@ -8,10 +8,15 @@ function App() {
     <WooLayout>
       <Routes>
         {menu_list.map((nav, index) => {
-          return <Route path={nav.value} element={nav.component} />;
+          return <Route key={index} path={nav.value} element={nav.component} />;
         })}
-        <Route path="/" element={<Navigate to="/home" />} />
-        <Route path="*" element={<Navigate to="/home" />} />
+        <Route key={"home"} path="/" element={<Navigate to="/home" />} />
+        <Route
+          key={"products"}
+          path={"/products/:id"}
+          element={<div>products</div>}
+        />
+        <Route key={"return"} path="*" element={<Navigate to="/home" />} />
       </Routes>
     </WooLayout>
   );
