@@ -26,7 +26,7 @@ const HomePage = () => {
               <Card key={prod.id}>
                 <CardImg
                   alt={prod.images[0].alt && prod.images[0].name}
-                  src={prod.images[0].src}
+                  src={prod.images.length > 0 && prod.images[0].src}
                 ></CardImg>
                 <CardBody>{prod.short_description}</CardBody>
                 <CardFooter>
